@@ -96,18 +96,18 @@ app.post('/user/login', function(req, res) {
 app.put('/profile/:id', function(req, res) {
   //console.log('receiving data ...');
   const id = req.params.id;
-      
+  let Body = req.body;   
   console.log('Body is ',req.body);
-  
-  connection.query('UPDATE users SET ? WHERE id = ?', [req.body, id], (error, result) => {
-    //console.log('result.insertId is ',result.insertId);
-    //console.log(`User added with ID: ${result.insertId}`);
+  if (Body.id) delete Body.id;
+  if (Body.password) delete Body.password;
+  if (Body.registration_date) delete Body.registration_date;
+  connection.query('UPDATE users SET ? WHERE id = ?', [Body, id], (error, result) => {
+    
     if (error) throw error;
-    //response.send('User updated successfully.');
-    //res.json(result);
+    
     res.json('Изменения выполнены успешно.');
   });
-  //response.send(req.body);
+  
 });
 
 //Получение пользователя
